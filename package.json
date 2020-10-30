@@ -1,0 +1,41 @@
+{
+  "name": "nodejs-sample",
+  "version": "1.0.0",
+  "description": "Sample app for Node JS",
+  "main": "start.js",
+  "scripts": {
+    "test": "mocha",
+    "start": "node start.js",
+    "build": "npm install",
+    "cc": "nyc npm run test",
+    "lint": "npx eslint *.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fazith27/nodejs-sample.git"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.12.1",
+    "eslint-config-standard": "^16.0.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "mocha": "^8.2.0",
+    "nyc": "^15.1.0",
+    "chai": "^4.2.0",
+    "sinon": "^9.2.1"
+  },
+  "keywords": [
+    "nodejs",
+    "node-js"
+  ],
+  "author": "Fazith Maheen Abubacker",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fazith27/nodejs-sample/issues"
+  },
+  "homepage": "https://github.com/fazith27/nodejs-sample#readme"
+}
