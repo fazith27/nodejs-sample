@@ -8,7 +8,7 @@ pipeline {
         checkout scm
       }
     }
-    stage('Test') {
+    stage('Unit Test, Linting and Code Coverage') {
       steps {
         sh 'npm install'
         sh 'npm test'
@@ -16,7 +16,7 @@ pipeline {
         sh 'npm run cc'
       }
     }
-    stage('Build'){
+    stage('Build Docker Image'){
       steps {
         sh 'docker build -t app .'
         sh 'mkdir ~/jenkins && mkdir ~/jenkins/artifact-repository'
@@ -24,13 +24,12 @@ pipeline {
         archiveArtifacts artifacts: 'app.tar', fingerprint: true
       }
     }
-    stage('Deploy'){
+    stage('Deploy : Explode archive docker image'){
       steps {
         sh 'mkdir ~/jenkins/deployment/'
         copyArtifacts fingerprintArtifacts: true, projectName: '${JOB_NAME}', selector: specific('${BUILD_NUMBER}')
         sh 'mv app.tar ~/jenkins/deployment/'
         sh 'docker load --input ~/jenkins/deployment/app.tar'
-        sh 'docker run -p 3000:3000 --name node app'
       }
     }
   }
