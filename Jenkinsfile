@@ -1,5 +1,8 @@
-node {
-  try {
+pipeline {
+  agent {
+    docker { image 'node:14-alpine' }
+  }
+  stages{
     stage('Checkout') {
         checkout scm
     }
@@ -20,8 +23,5 @@ node {
         sh 'docker load < app.tar'
         sh 'docker run -p 3000:3000 --name node app'
     }
-  }
-  catch (err) {
-    throw err
   }
 }
