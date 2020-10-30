@@ -20,14 +20,15 @@ pipeline {
       steps {
         sh 'docker build -t app .'
         sh 'mkdir ~/jenkins && mkdir ~/jenkins/artifact-repository'
-        sh 'docker save --output ~/jenkins/artifact-repository/app.tar app'
-        archiveArtifacts artifacts: 'jenkins/artifact-repository/app.tar', fingerprint: true
+        sh 'docker save --output app.tar app'
+        sh 'mv app.tar ~/jenkins/artifact-repository'
+        archiveArtifacts artifacts: 'app.tar', fingerprint: true
       }
     }
     stage('Deploy : Explode archive docker image'){
-      steps {
-        sh 'mkdir ~/jenkins/deployment/'
+      steps {        
         copyArtifacts fingerprintArtifacts: true, projectName: '${JOB_NAME}', selector: specific('${BUILD_NUMBER}')
+        sh 'mkdir ~/jenkins/deployment/'
         sh 'mv app.tar ~/jenkins/deployment/'
         sh 'docker load --input ~/jenkins/deployment/app.tar'
       }
