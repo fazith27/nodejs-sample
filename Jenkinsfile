@@ -19,7 +19,8 @@ pipeline {
     stage('Build'){
       steps {
         sh 'docker build -t app --no-cache .'
-        sh 'mkdir ~/jenkins/artifact-repository/ && docker save --output ~/jenkins/artifact-repository/app.tar app'
+        sh 'mkdir ~/jenkins && mkdir ~/jenkins/artifact-repository'
+        sh 'docker save --output ~/jenkins/artifact-repository/app.tar app'
         archiveArtifacts artifacts: '~/jenkins/artifact-repository/app.tar', fingerprint: true
       }
     }
