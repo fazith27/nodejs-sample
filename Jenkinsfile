@@ -18,7 +18,7 @@ pipeline {
     }
     stage('Build'){
       steps {
-        sh 'docker build -t app --no-cache .'
+        sh 'docker build -t app .'
         sh 'mkdir ~/jenkins && mkdir ~/jenkins/artifact-repository'
         sh 'docker save --output ~/jenkins/artifact-repository/app.tar app'
         archiveArtifacts artifacts: 'app.tar', fingerprint: true
@@ -27,7 +27,8 @@ pipeline {
     stage('Deploy'){
       steps {
         sh 'mkdir ~/jenkins/deployment/'
-        copyArtifacts fingerprintArtifacts: true, projectName: '${JOB_NAME}', selector: specific('${BUILD_NUMBER}'), target : 'jenkins/deployment/'
+        copyArtifacts fingerprintArtifacts: true, projectName: '${JOB_NAME}', selector: specific('${BUILD_NUMBER}')
+        sh 'mv app.tar ~/jenkins/deployment/'
         sh 'docker load --input ~/jenkins/deployment/app.tar'
         sh 'docker run -p 3000:3000 --name node app'
       }
